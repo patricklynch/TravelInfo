@@ -10,6 +10,14 @@ import XCTest
 @testable import TravelInfo
 import SwiftyJSON
 
+extension Date {
+    static var midnight: Date {
+        let date = Date()
+        let calendar = Calendar(identifier: .gregorian)
+        return calendar.startOfDay(for: date)
+    }
+}
+
 class TravelOptionTests: XCTestCase {
     
     override func setUp() {
@@ -37,8 +45,11 @@ class TravelOptionTests: XCTestCase {
         let urlString = "http://cdn-goeuro.com/static_content/web/logos/{size}/postbus.png"
         XCTAssertEqual(firstOption.providerLogoUrlString, urlString)
         XCTAssertEqual(firstOption.priceInEuros, 5.48)
-        XCTAssertEqual(firstOption.departureTime, "2:41")
-        XCTAssertEqual(firstOption.arrivalTime, "16:56")
+        let expectedDeparture = TravelOption.dateFormatter.date(from: "2:41")
+        XCTAssertEqual(firstOption.departureTime, expectedDeparture)
+        let expectedArrival = TravelOption.dateFormatter.date(from: "16:56")
+        XCTAssertEqual(firstOption.arrivalTime, expectedArrival)
+        XCTAssertEqual(firstOption.travelDuration, 51300.0)
         XCTAssertEqual(firstOption.numberOfStops, 2)
         let url = URL(string: "http://cdn-goeuro.com/static_content/web/logos/99/postbus.png")
         XCTAssertEqual(firstOption.providerLogoUrl(at: 99), url)

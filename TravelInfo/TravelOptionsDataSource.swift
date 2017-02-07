@@ -8,9 +8,13 @@
 
 import UIKit
 
-class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingDataSource {
+class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingDataSource, Sortable {
     
     let travelMode: TravelMode
+    
+    /// Background queue for executing search on large data set, without which
+    /// there is a noticeable lock on the main thread
+    private let filterQueue = DispatchQueue(label: "com.lynchdev.BusInfo.filterQueue")
     
     init(travelMode: TravelMode) {
         self.travelMode = travelMode
@@ -26,11 +30,44 @@ class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingData
         }
     }
     
+    private(set) var unfilteredItems = NSOrderedSet() {
+        didSet {
+            updateFilteredItems()
+        }
+    }
+    
+    private func updateFilteredItems() {
+        guard let sortOption = sortOption else {
+            items = unfilteredItems
+            return
+        }
+        
+        let options = unfilteredItems.flatMap { $0 as? TravelOption }
+        filterQueue.async {
+            let results = options.sorted {
+                switch sortOption {
+                case .price:
+                    return $0.priceInEuros < $1.priceInEuros
+                case .duration:
+                    return $0.travelDuration < $1.travelDuration
+                case .departure:
+                    return $0.departureTime.timeIntervalSinceNow < $1.departureTime.timeIntervalSinceNow
+                }
+            }
+            DispatchQueue.main.async { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.items = NSOrderedSet(array: results)
+            }
+        }
+    }
+    
     func load(completion: (()->())?) {
         let operation = LoadTravelOptions(for: travelMode)
         operation.queue() {
             if let options = operation.results {
-                self.items = NSOrderedSet(array: options)
+                self.unfilteredItems = NSOrderedSet(array: options)
                 
             } else if let error = operation.error {
                 print(error)
@@ -59,5 +96,13 @@ class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingData
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
+    }
+    
+    // MARK: - Sortable
+    
+    var sortOption: SortOptions? = .departure {
+        didSet {
+            updateFilteredItems()
+        }
     }
 }

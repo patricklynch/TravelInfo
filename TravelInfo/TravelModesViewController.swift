@@ -47,7 +47,51 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
         
         navigationController?.navigationBar.barTintColor = Color.blue
         navigationController?.toolbar.barTintColor = Color.blue
+        navigationController?.toolbar.tintColor = UIColor.white
         tabBarCollectionView.backgroundColor = Color.blue
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    
+        let itemSpacing: CGFloat = 40.0
+        var toolbarItems: [UIBarButtonItem] = []
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        for option in SortOptions.all {
+            let button = UIBarButtonItem(
+                image: option.toolBarImage,
+                style: .plain,
+                target: self,
+                action: #selector(onToolbarItemSelected)
+            )
+            toolbarItems.append(button)
+            if option != SortOptions.all.last {
+                let space = UIBarButtonItem(
+                    barButtonSystemItem: .fixedSpace,
+                    target: nil,
+                    action: nil
+                )
+                space.width = itemSpacing
+                toolbarItems.append(space)
+            }
+        }
+        toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        setToolbarItems(toolbarItems, animated: animated)
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func onToolbarItemSelected(sender: UIBarButtonItem) {
+        guard var sortDelegate = currentViewController as? Sortable else {
+            return
+        }
+        let activeItems = (toolbarItems ?? []).filter {
+            $0.image != nil
+        }
+        guard let index = activeItems.index(of: sender) else {
+                return
+        }
+        sortDelegate.sortOption = SortOptions.all[index]
     }
     
     func setDefaultSelection() {

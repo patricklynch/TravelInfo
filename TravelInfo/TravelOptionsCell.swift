@@ -40,7 +40,7 @@ class TravelOptionCell: UITableViewCell {
             
             let arrivalString = TravelOption.dateFormatter.string(from: travelOption.arrivalTime)
             let departureString = TravelOption.dateFormatter.string(from: travelOption.departureTime)
-            timeLabel.text = "\(arrivalString) – \(departureString)"
+            timeLabel.text = "\(departureString) – \(arrivalString)"
             priceLabel.text = TravelOptionCell.currencyFormatter.string(from: NSNumber(value: travelOption.priceInEuros))
             durationLabel.text = TravelOptionCell.durationFormatter.string(from: travelOption.travelDuration)
             if let imageUrl = travelOption.providerLogoUrl() {

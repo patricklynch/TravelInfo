@@ -13,7 +13,6 @@ class TitleView: UIView {
     private static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM dd"
-        formatter.locale = Locale(identifier: "en_DE")
         return formatter
     }()
     

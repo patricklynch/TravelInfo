@@ -12,7 +12,7 @@ enum AnimationDirection: CGFloat {
     case left = -1.0, right = 1.0, none = 0.0
 }
 
-class TravelOptionsViewController: UIViewController, UITableViewDelegate {
+class TravelOptionsViewController: UIViewController, UITableViewDelegate, Sortable {
     
     private var dataSource: TravelOptionsDataSource!
     
@@ -72,5 +72,13 @@ class TravelOptionsViewController: UIViewController, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // MARK: - Sortable
+    
+    var sortOption: SortOptions? {
+        didSet {
+            dataSource.sortOption = sortOption
+        }
     }
 }

@@ -14,8 +14,7 @@ struct TravelOption: CustomDebugStringConvertible, Equatable, Hashable {
     
     static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "hh:mm"
-        formatter.locale = Locale(identifier: "en_DE")
+        formatter.dateFormat = "HH:mm"
         return formatter
     }()
     
@@ -38,9 +37,9 @@ struct TravelOption: CustomDebugStringConvertible, Equatable, Hashable {
         self.id = id
         self.providerLogoUrlString = providerLogoUrlString
         self.priceInEuros = priceInEuros
-        self.departureTime  = departureTime
-        self.arrivalTime  = arrivalTime
-        self.numberOfStops  = numberOfStops
+        self.numberOfStops = numberOfStops
+        self.departureTime = departureTime
+        self.arrivalTime = arrivalTime
     }
     
     func providerLogoUrl(at size: Int = 63) -> URL? {
@@ -51,14 +50,7 @@ struct TravelOption: CustomDebugStringConvertible, Equatable, Hashable {
     }
     
     var travelDuration: TimeInterval {
-        let oneDay: TimeInterval = 60 * 60 * 24
-        let adjustedArrivalTime: Date
-        if arrivalTime.timeIntervalSince(departureTime) < 0 {
-            adjustedArrivalTime = Date(timeInterval: oneDay, since: departureTime)
-        } else {
-            adjustedArrivalTime = arrivalTime
-        }
-        return adjustedArrivalTime.timeIntervalSince(departureTime)
+        return arrivalTime.timeIntervalSince(departureTime)
     }
     
     // MARK: - CustomDebugStringConvertible
@@ -76,13 +68,20 @@ struct TravelOption: CustomDebugStringConvertible, Equatable, Hashable {
     // MARK: - Hashable
     
     var hashValue: Int {
-        return id.hashValue
+        return departureTime.hashValue + arrivalTime.hashValue + priceInEuros.hashValue
     }
     
     // MARK: - Equatable
     
     static func ==(lhs: TravelOption, rhs: TravelOption) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.departureTime == rhs.departureTime && lhs.arrivalTime == rhs.arrivalTime && lhs.priceInEuros == rhs.priceInEuros
+    }
+}
+
+fileprivate extension Date {
+    
+    func isBefore(_ date: Date) -> Bool {
+        return timeIntervalSince(date) < 0
     }
 }
 
