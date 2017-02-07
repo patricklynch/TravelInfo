@@ -16,12 +16,13 @@ extension TravelMode {
 
 class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
-    @IBOutlet private weak var tabBarCollectionView: UICollectionView!
+    @IBOutlet weak private(set) var tabBarCollectionView: UICollectionView!
     @IBOutlet private weak var pageContainerView: UIView!
     
-    let cache = NSCache<NSString, UIViewController>()
+    let cache = NSCache<NSString, TravelOptionsViewController>()
     
     weak private(set) var currentViewController: UIViewController?
+    private(set) var currentIndexPath: IndexPath?
     
     private let dataSource = TravelModesDataSource()
     
@@ -30,31 +31,51 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let titleViewModel =  TitleView.ViewModel(
+            origin: "Berlin",
+            destination: "Munich",
+            date: Date()
+        )
+        navigationItem.titleView = TitleView.create(viewModel:titleViewModel)
+        
         tabBarCollectionView.dataSource = dataSource
         tabBarCollectionView.delegate = self
         
-        let operation = LoadTravelOptions(travelMode: .flight)
-        operation.queue() {
-            if let options = operation.results {
-                print(options)
-            } else if let error = operation.error {
-                print(error)
-            }
+        DispatchQueue.main.asyncAfter(delay: 0.0) {
+            self.setDefaultSelection()
         }
+        
+        navigationController?.navigationBar.barTintColor = Color.blue
+        navigationController?.toolbar.barTintColor = Color.blue
+        tabBarCollectionView.backgroundColor = Color.blue
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    func setDefaultSelection() {
+        let defaultIndexPath = IndexPath(item: 0, section: 0)
+        tabBarCollectionView.selectItem(at: defaultIndexPath, animated: true, scrollPosition: .left)
+        onIndexPathSelected(defaultIndexPath)
     }
     
-    func showViewController(for travelMode: TravelMode) {
-        let viewController: UIViewController
+    func onIndexPathSelected(_ indexPath: IndexPath) {
+        let travelMode = dataSource.travelModes[indexPath.item]
+        let direction: AnimationDirection
+        if let currentIndexPath = currentIndexPath {
+            if indexPath.item < currentIndexPath.item {
+                direction = .right
+            } else if indexPath.item > currentIndexPath.item {
+                direction = .left
+            } else {
+                direction = .none
+            }
+        } else {
+            direction = .none
+        }
+        
+        let viewController: TravelOptionsViewController
         if let cachedViewController = cache.object(forKey: travelMode.cacheKey) {
             viewController = cachedViewController
         } else {
-            let demoColors = [UIColor.red, UIColor.blue, UIColor.green]
-            let newViewController = UIViewController()
-            newViewController.view.backgroundColor = demoColors[Int(TravelMode.all.index(of: travelMode)!)]
+            let newViewController = TravelOptionsViewController.create(with: travelMode)
             viewController = newViewController
             cache.setObject(newViewController, forKey: travelMode.cacheKey)
         }
@@ -66,6 +87,7 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
         }
         currentViewController = viewController
         
+        viewController.direction = direction
         viewController.willMove(toParentViewController: self)
         pageContainerView.addSubview(viewController.view)
         viewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -74,13 +96,16 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
         let constraintsV = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: views)
         pageContainerView.addConstraints(constraintsV + constraintsH)
         viewController.didMove(toParentViewController: self)
+        currentIndexPath = indexPath
     }
     
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let travelMode = dataSource.travelModes[indexPath.item]
-        showViewController(for: travelMode)
+        guard currentIndexPath != indexPath else {
+            return
+        }
+        onIndexPathSelected(indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

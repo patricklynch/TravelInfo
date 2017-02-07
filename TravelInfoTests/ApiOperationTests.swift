@@ -21,26 +21,26 @@ class LoadTravelOptionsTests: XCTestCase {
     }
     
     func testFlightUrl() {
-        let flightOperation = LoadTravelOptions(travelMode: .flight)
+        let flightOperation = LoadTravelOptions(for: .flight)
         let expectedUrl = "https://api.myjson.com/bins/w60i"
         XCTAssertEqual(flightOperation.fullUrl?.absoluteString, expectedUrl)
     }
     
     func testTrainUrl() {
-        let flightOperation = LoadTravelOptions(travelMode: .train)
+        let flightOperation = LoadTravelOptions(for: .train)
         let expectedUrl = "https://api.myjson.com/bins/3zmcy"
         XCTAssertEqual(flightOperation.fullUrl?.absoluteString, expectedUrl)
     }
     
     func testBusUrl() {
-        let flightOperation = LoadTravelOptions(travelMode: .bus)
+        let flightOperation = LoadTravelOptions(for: .bus)
         let expectedUrl = "https://api.myjson.com/bins/37yzm"
         XCTAssertEqual(flightOperation.fullUrl?.absoluteString, expectedUrl)
     }
     
     func testLoadTravelOptions() {
         let mockRequestExecutor = MockExecutor(filename: "travel-options.json", forceError: false)
-        let operation = LoadTravelOptions(travelMode: .flight)
+        let operation = LoadTravelOptions(for: .flight)
         operation.requestExecutor = mockRequestExecutor
         operation.main()
         
@@ -51,7 +51,7 @@ class LoadTravelOptionsTests: XCTestCase {
     
     func testLoadTravelOptionsError() {
         let mockRequestExecutor = MockExecutor(filename: "travel-options.json", forceError: true)
-        let operation = LoadTravelOptions(travelMode: .flight)
+        let operation = LoadTravelOptions(for: .flight)
         operation.requestExecutor = mockRequestExecutor
         operation.main()
         

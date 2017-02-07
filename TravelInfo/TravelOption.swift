@@ -1,5 +1,5 @@
 //
-//  Models.swift
+//  TravelOption.swift
 //  TravelInfo
 //
 //  Created by Patrick Lynch on 2/7/17.
@@ -9,22 +9,29 @@
 import Foundation
 import SwiftyJSON
 
-struct TravelOption: CustomDebugStringConvertible {
+struct TravelOption: CustomDebugStringConvertible, Equatable, Hashable {
     static let sizeMacro = "{size}"
+    
+    static var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm"
+        formatter.locale = Locale(identifier: "en_DE")
+        return formatter
+    }()
     
     let id: Int
     let providerLogoUrlString: String
     let priceInEuros: Float
-    let departureTime: String
-    let arrivalTime: String
+    let departureTime: Date
+    let arrivalTime: Date
     let numberOfStops: Int
     
     init?(json: JSON) {
         guard let id = json["id"].int,
             let providerLogoUrlString = json["provider_logo"].string,
             let priceInEuros = json["price_in_euros"].floatFromFloatOrString,
-            let departureTime = json["departure_time"].string,
-            let arrivalTime = json["arrival_time"].string,
+            let departureTime = json["departure_time"].dateFromString,
+            let arrivalTime = json["arrival_time"].dateFromString,
             let numberOfStops = json["number_of_stops"].int else {
                 return nil
         }
@@ -43,6 +50,17 @@ struct TravelOption: CustomDebugStringConvertible {
         return URL(string: replacedString)
     }
     
+    var travelDuration: TimeInterval {
+        let oneDay: TimeInterval = 60 * 60 * 24
+        let adjustedArrivalTime: Date
+        if arrivalTime.timeIntervalSince(departureTime) < 0 {
+            adjustedArrivalTime = Date(timeInterval: oneDay, since: departureTime)
+        } else {
+            adjustedArrivalTime = arrivalTime
+        }
+        return adjustedArrivalTime.timeIntervalSince(departureTime)
+    }
+    
     // MARK: - CustomDebugStringConvertible
     
     var debugDescription: String {
@@ -54,6 +72,18 @@ struct TravelOption: CustomDebugStringConvertible {
             + "\tarrivalTime  = \(arrivalTime)\n"
             + "\tnumberOfStops  = \(numberOfStops)\n"
     }
+    
+    // MARK: - Hashable
+    
+    var hashValue: Int {
+        return id.hashValue
+    }
+    
+    // MARK: - Equatable
+    
+    static func ==(lhs: TravelOption, rhs: TravelOption) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 fileprivate extension JSON {
@@ -64,5 +94,12 @@ fileprivate extension JSON {
         } else {
             return float
         }
+    }
+    
+    var dateFromString: Date? {
+        guard let string = string else {
+            return nil
+        }
+        return TravelOption.dateFormatter.date(from: string)
     }
 }

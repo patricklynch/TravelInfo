@@ -42,7 +42,7 @@ class LoadTravelOptions: AsyncOperation {
     // another object that conforms to `RequestExecutor`
     var requestExecutor: RequestExecutor = DefaultRequestEecutor()
     
-    required init(travelMode: TravelMode) {
+    required init(for travelMode: TravelMode) {
         self.travelMode = travelMode
     }
     

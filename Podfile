@@ -8,4 +8,5 @@ end
 
 target 'TravelInfoTests' do
     pod 'SwiftyJSON', '~> 3.1.4'
+    pod 'SDWebImage'
 end
