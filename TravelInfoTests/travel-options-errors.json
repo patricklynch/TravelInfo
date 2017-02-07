@@ -1,0 +1,37 @@
+[{
+ "provider_logo": "http://cdn-goeuro.com/static_content/web/logos/{size}/postbus.png",
+ "price_in_euros": 5.48,
+ "departure_time": "2:41",
+ "arrival_time": "16:56",
+ "number_of_stops": 2
+ }, {
+ "id": 2,
+ "price_in_euros": 24.71,
+ "departure_time": "7:10",
+ "arrival_time": "16:35",
+ "number_of_stops": 2
+ }, {
+ "id": 3,
+ "provider_logo": "http://cdn-goeuro.com/static_content/web/logos/{size}/meinfernbus_flixbus.png",
+ "departure_time": "5:16",
+ "arrival_time": "19:11",
+ "number_of_stops": 0
+ },{
+ "id": 1,
+ "provider_logo": "http://cdn-goeuro.com/static_content/web/logos/{size}/postbus.png",
+ "price_in_euros": 5.48,
+ "arrival_time": "16:56",
+ "number_of_stops": 2
+ }, {
+ "id": 2,
+ "provider_logo": "http://cdn-goeuro.com/static_content/web/logos/{size}/postbus.png",
+ "price_in_euros": 24.71,
+ "departure_time": "7:10",
+ "number_of_stops": 2
+ }, {
+ "id": 3,
+ "provider_logo": "http://cdn-goeuro.com/static_content/web/logos/{size}/meinfernbus_flixbus.png",
+ "price_in_euros": 70.37,
+ "departure_time": "5:16",
+ "arrival_time": "19:11",
+  }]
