@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		43C70B1E9068319684F41E56 /* Pods_TravelInfoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F91FA0CB6D00985B39E31D /* Pods_TravelInfoTests.framework */; };
 		5A58012E1E4A16B80098F8B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A58012D1E4A16B80098F8B8 /* AppDelegate.swift */; };
-		5A5801301E4A16B80098F8B8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A58012F1E4A16B80098F8B8 /* ViewController.swift */; };
+		5A5801301E4A16B80098F8B8 /* TravelModesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A58012F1E4A16B80098F8B8 /* TravelModesViewController.swift */; };
 		5A5801331E4A16B80098F8B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A5801311E4A16B80098F8B8 /* Main.storyboard */; };
 		5A5801351E4A16B80098F8B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A5801341E4A16B80098F8B8 /* Assets.xcassets */; };
 		5A5801381E4A16B80098F8B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A5801361E4A16B80098F8B8 /* LaunchScreen.storyboard */; };
@@ -21,6 +21,10 @@
 		5A58015A1E4A1DD00098F8B8 /* OperationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5801581E4A1DD00098F8B8 /* OperationUtils.swift */; };
 		5A58015C1E4A1E9E0098F8B8 /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A58015B1E4A1E9E0098F8B8 /* RequestExecutor.swift */; };
 		5A58015E1E4A22A40098F8B8 /* ApiOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A58015D1E4A22A40098F8B8 /* ApiOperationTests.swift */; };
+		5A5801601E4A26FB0098F8B8 /* UIKit+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A58015F1E4A26FB0098F8B8 /* UIKit+.swift */; };
+		5A5801631E4A2D190098F8B8 /* TravelModesTabCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5801621E4A2D190098F8B8 /* TravelModesTabCell.swift */; };
+		5A5801651E4A2D280098F8B8 /* TravelModesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5801641E4A2D280098F8B8 /* TravelModesDataSource.swift */; };
+		5A5801671E4A2D540098F8B8 /* TravelModesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5801661E4A2D540098F8B8 /* TravelModesViewControllerTests.swift */; };
 		D7BA7484A85E411D88BFF7D7 /* Pods_TravelInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0FC6878A013C14121FA030 /* Pods_TravelInfo.framework */; };
 /* End PBXBuildFile section */
 
@@ -39,7 +43,7 @@
 		52175A9E42C1730AEFEE39F9 /* Pods-TravelInfo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelInfo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelInfo/Pods-TravelInfo.debug.xcconfig"; sourceTree = "<group>"; };
 		5A58012A1E4A16B80098F8B8 /* TravelInfo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelInfo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A58012D1E4A16B80098F8B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5A58012F1E4A16B80098F8B8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5A58012F1E4A16B80098F8B8 /* TravelModesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelModesViewController.swift; sourceTree = "<group>"; };
 		5A5801321E4A16B80098F8B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5A5801341E4A16B80098F8B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A5801371E4A16B80098F8B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,6 +58,10 @@
 		5A5801581E4A1DD00098F8B8 /* OperationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationUtils.swift; sourceTree = "<group>"; };
 		5A58015B1E4A1E9E0098F8B8 /* RequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
 		5A58015D1E4A22A40098F8B8 /* ApiOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiOperationTests.swift; sourceTree = "<group>"; };
+		5A58015F1E4A26FB0098F8B8 /* UIKit+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit+.swift"; sourceTree = "<group>"; };
+		5A5801621E4A2D190098F8B8 /* TravelModesTabCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelModesTabCell.swift; sourceTree = "<group>"; };
+		5A5801641E4A2D280098F8B8 /* TravelModesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelModesDataSource.swift; sourceTree = "<group>"; };
+		5A5801661E4A2D540098F8B8 /* TravelModesViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelModesViewControllerTests.swift; sourceTree = "<group>"; };
 		7B0FC6878A013C14121FA030 /* Pods_TravelInfo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F91FA0CB6D00985B39E31D /* Pods_TravelInfoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelInfoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7423DC1B00D2A7E92F39FE6 /* Pods-TravelInfoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelInfoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TravelInfoTests/Pods-TravelInfoTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -123,7 +131,8 @@
 				5A58014D1E4A17EB0098F8B8 /* Models.swift */,
 				5A5801581E4A1DD00098F8B8 /* OperationUtils.swift */,
 				5A58015B1E4A1E9E0098F8B8 /* RequestExecutor.swift */,
-				5A58012F1E4A16B80098F8B8 /* ViewController.swift */,
+				5A5801611E4A2CF80098F8B8 /* Travel Models Tab Controller */,
+				5A58015F1E4A26FB0098F8B8 /* UIKit+.swift */,
 			);
 			path = TravelInfo;
 			sourceTree = "<group>";
@@ -133,11 +142,22 @@
 			children = (
 				5A5801421E4A16B90098F8B8 /* TravelOptionTests.swift */,
 				5A58015D1E4A22A40098F8B8 /* ApiOperationTests.swift */,
+				5A5801661E4A2D540098F8B8 /* TravelModesViewControllerTests.swift */,
 				5A58014F1E4A1A3E0098F8B8 /* travel-options.json */,
 				5A5801551E4A1ABE0098F8B8 /* travel-options-errors.json */,
 				5A5801441E4A16B90098F8B8 /* Info.plist */,
 			);
 			path = TravelInfoTests;
+			sourceTree = "<group>";
+		};
+		5A5801611E4A2CF80098F8B8 /* Travel Models Tab Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5A5801641E4A2D280098F8B8 /* TravelModesDataSource.swift */,
+				5A5801621E4A2D190098F8B8 /* TravelModesTabCell.swift */,
+				5A58012F1E4A16B80098F8B8 /* TravelModesViewController.swift */,
+			);
+			name = "Travel Models Tab Controller";
 			sourceTree = "<group>";
 		};
 		F921DDE55D0F7B20A117AC54 /* Frameworks */ = {
@@ -353,9 +373,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A5801631E4A2D190098F8B8 /* TravelModesTabCell.swift in Sources */,
+				5A5801651E4A2D280098F8B8 /* TravelModesDataSource.swift in Sources */,
 				5A58015C1E4A1E9E0098F8B8 /* RequestExecutor.swift in Sources */,
+				5A5801601E4A26FB0098F8B8 /* UIKit+.swift in Sources */,
 				5A58014E1E4A17EB0098F8B8 /* Models.swift in Sources */,
-				5A5801301E4A16B80098F8B8 /* ViewController.swift in Sources */,
+				5A5801301E4A16B80098F8B8 /* TravelModesViewController.swift in Sources */,
 				5A5801591E4A1DD00098F8B8 /* JsonApiOperation.swift in Sources */,
 				5A58012E1E4A16B80098F8B8 /* AppDelegate.swift in Sources */,
 				5A58015A1E4A1DD00098F8B8 /* OperationUtils.swift in Sources */,
@@ -367,6 +390,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A58015E1E4A22A40098F8B8 /* ApiOperationTests.swift in Sources */,
+				5A5801671E4A2D540098F8B8 /* TravelModesViewControllerTests.swift in Sources */,
 				5A5801431E4A16B90098F8B8 /* TravelOptionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -13,6 +13,18 @@ enum TravelMode: String {
     case flight = "w60i"
     case train = "3zmcy"
     case bus = "37yzm"
+    
+    var localizedTitle: String {
+        switch self {
+        case .flight:   return NSLocalizedString("Flight", comment: "")
+        case .bus:      return NSLocalizedString("Bus", comment: "")
+        case .train:    return NSLocalizedString("Train", comment: "")
+        }
+    }
+    
+    static var all: [TravelMode] {
+        return [train, bus, flight]
+    }
 }
 
 /// Base class for all opertions that will execute a network request
