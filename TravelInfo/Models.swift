@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-struct TravelOption {
+struct TravelOption: CustomDebugStringConvertible {
     static let sizeMacro = "{size}"
     
     let id: Int
@@ -22,7 +22,7 @@ struct TravelOption {
     init?(json: JSON) {
         guard let id = json["id"].int,
             let providerLogoUrlString = json["provider_logo"].string,
-            let priceInEuros = json["price_in_euros"].float,
+            let priceInEuros = json["price_in_euros"].floatFromFloatOrString,
             let departureTime = json["departure_time"].string,
             let arrivalTime = json["arrival_time"].string,
             let numberOfStops = json["number_of_stops"].int else {
@@ -41,5 +41,28 @@ struct TravelOption {
             .replacingOccurrences(of: TravelOption.sizeMacro, with: "\(size)")
         
         return URL(string: replacedString)
+    }
+    
+    // MARK: - CustomDebugStringConvertible
+    
+    var debugDescription: String {
+        return "<TravelOption>\n"
+            + "id = \(id)\n"
+            + "\tproviderLogoUrlString = \(providerLogoUrlString)\n"
+            + "\tpriceInEuros = \(priceInEuros)\n"
+            + "\tdepartureTime  = \(departureTime)\n"
+            + "\tarrivalTime  = \(arrivalTime)\n"
+            + "\tnumberOfStops  = \(numberOfStops)\n"
+    }
+}
+
+fileprivate extension JSON {
+    
+    var floatFromFloatOrString: Float? {
+        if let string = string, let floatFromString = Float(string) {
+            return floatFromString
+        } else {
+            return float
+        }
     }
 }

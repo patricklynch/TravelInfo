@@ -13,5 +13,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let operation = LoadTravelOptions(travelMode: .flight)
+        operation.queue() {
+            if let options = operation.results {
+                print(options)
+            } else if let error = operation.error {
+                print(error)
+            }
+        }
     }
 }

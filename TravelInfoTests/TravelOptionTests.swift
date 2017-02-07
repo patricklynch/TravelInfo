@@ -1,5 +1,5 @@
 //
-//  TravelInfoTests.swift
+//  TravelOptionTests.swift
 //  TravelInfoTests
 //
 //  Created by Patrick Lynch on 2/7/17.
@@ -10,7 +10,7 @@ import XCTest
 @testable import TravelInfo
 import SwiftyJSON
 
-class TravelInfoTests: XCTestCase {
+class TravelOptionTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

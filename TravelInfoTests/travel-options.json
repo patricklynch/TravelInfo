@@ -8,7 +8,7 @@
   }, {
   "id": 2,
   "provider_logo": "http://cdn-goeuro.com/static_content/web/logos/{size}/postbus.png",
-  "price_in_euros": 24.71,
+  "price_in_euros": "24.71",
   "departure_time": "7:10",
   "arrival_time": "16:35",
   "number_of_stops": 2
