@@ -19,7 +19,7 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
     @IBOutlet weak private(set) var tabBarCollectionView: UICollectionView!
     @IBOutlet private weak var pageContainerView: UIView!
     
-    let cache = NSCache<NSString, TravelOptionsViewController>()
+    let cache = NSCache<NSString, UIViewController>()
     
     weak private(set) var currentViewController: UIViewController?
     private(set) var currentIndexPath: IndexPath?
@@ -100,22 +100,24 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
         onIndexPathSelected(defaultIndexPath)
     }
     
-    func onIndexPathSelected(_ indexPath: IndexPath) {
-        let travelMode = dataSource.travelModes[indexPath.item]
-        let direction: AnimationDirection
-        if let currentIndexPath = currentIndexPath {
-            if indexPath.item < currentIndexPath.item {
-                direction = .right
-            } else if indexPath.item > currentIndexPath.item {
-                direction = .left
+    private func animationDirection(to destination: IndexPath, from source: IndexPath?) -> AnimationDirection {
+        if let source = source {
+            if destination.item < source.item {
+                return .right
+            } else if destination.item > source.item {
+                return .left
             } else {
-                direction = .up
+                return .up
             }
         } else {
-            direction = .up
+            return .up
         }
+    }
+    
+    func onIndexPathSelected(_ indexPath: IndexPath) {
+        let travelMode = dataSource.travelModes[indexPath.item]
         
-        let viewController: TravelOptionsViewController
+        let viewController: UIViewController
         if let cachedViewController = cache.object(forKey: travelMode.cacheKey) {
             viewController = cachedViewController
         } else {
@@ -131,7 +133,11 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
         }
         currentViewController = viewController
         
-        viewController.direction = direction
+        if var animatable = viewController as? AnimatableViewController {
+            animatable.direction = animationDirection(to: indexPath, from: currentIndexPath)
+        }
+        currentIndexPath = indexPath
+        
         viewController.willMove(toParentViewController: self)
         pageContainerView.addSubview(viewController.view)
         viewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -140,7 +146,6 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
         let constraintsV = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: views)
         pageContainerView.addConstraints(constraintsV + constraintsH)
         viewController.didMove(toParentViewController: self)
-        currentIndexPath = indexPath
     }
     
     // MARK: - UICollectionViewDelegate

@@ -78,13 +78,6 @@ struct TravelOption: CustomDebugStringConvertible, Equatable, Hashable {
     }
 }
 
-fileprivate extension Date {
-    
-    func isBefore(_ date: Date) -> Bool {
-        return timeIntervalSince(date) < 0
-    }
-}
-
 fileprivate extension JSON {
     
     var floatFromFloatOrString: Float? {

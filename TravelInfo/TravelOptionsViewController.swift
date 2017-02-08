@@ -8,15 +8,9 @@
 
 import UIKit
 
-enum AnimationDirection: CGFloat {
-    case left, right, up
-}
-
-class TravelOptionsViewController: UIViewController, UITableViewDelegate, Sortable {
+class TravelOptionsViewController: UIViewController, UITableViewDelegate, Sortable, AnimatableViewController {
     
     private var dataSource: TravelOptionsDataSource!
-    
-    var direction: AnimationDirection = .up
     
     static func create(with travelMode: TravelMode) -> TravelOptionsViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -50,6 +44,10 @@ class TravelOptionsViewController: UIViewController, UITableViewDelegate, Sortab
             self.view.alpha = 1.0
         }
         
+        guard let direction = direction else {
+            return
+        }
+        
         let transform: CGAffineTransform
         switch direction {
         case .up:
@@ -79,6 +77,10 @@ class TravelOptionsViewController: UIViewController, UITableViewDelegate, Sortab
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    // MARK: - AnimatableViewController
+    
+    var direction: AnimationDirection?
     
     // MARK: - Sortable
     

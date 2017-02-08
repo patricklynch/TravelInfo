@@ -12,9 +12,8 @@ class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingData
     
     let travelMode: TravelMode
     
-    /// Background queue for executing search on large data set, without which
-    /// there is a noticeable lock on the main thread
-    private let filterQueue = DispatchQueue(label: "com.lynchdev.BusInfo.filterQueue")
+    /// To prevent locking the main thread while sorting large data sets:
+    private let sortQueue = DispatchQueue(label: "com.lynchdev.BusInfo.sortQueue")
     
     init(travelMode: TravelMode) {
         self.travelMode = travelMode
@@ -30,20 +29,20 @@ class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingData
         }
     }
     
-    private(set) var unfilteredItems = NSOrderedSet() {
+    private(set) var unsortedItems = NSOrderedSet() {
         didSet {
-            updateFilteredItems()
+            updateSortedItems()
         }
     }
     
-    private func updateFilteredItems() {
+    private func updateSortedItems() {
         guard let sortOption = sortOption else {
-            items = unfilteredItems
+            items = unsortedItems
             return
         }
         
-        let options = unfilteredItems.flatMap { $0 as? TravelOption }
-        filterQueue.async {
+        let options = unsortedItems.flatMap { $0 as? TravelOption }
+        sortQueue.async {
             let results = options.sorted {
                 switch sortOption {
                 case .price:
@@ -67,7 +66,7 @@ class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingData
         let operation = LoadTravelOptions(for: travelMode)
         operation.queue() {
             if let options = operation.results {
-                self.unfilteredItems = NSOrderedSet(array: options)
+                self.unsortedItems = NSOrderedSet(array: options)
                 
             } else if let error = operation.error {
                 print(error)
@@ -105,7 +104,7 @@ class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingData
             items = NSOrderedSet(array: [])
             
             DispatchQueue.main.asyncAfter(delay: 0.25) {
-                self.updateFilteredItems()
+                self.updateSortedItems()
             }
         }
     }

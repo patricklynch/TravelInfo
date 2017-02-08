@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// Defines a data source object that can ask its `delegate` to perform specific updates
+/// on a table view without ever having to call `reloadData()`.
 protocol SelfUpdatingDataSource: class {
     var delegate: SelfUpdatingDataSourceDelegate? { get set }
     func decorate(cell: UIView, at indexPath: IndexPath)
@@ -24,8 +26,9 @@ extension SelfUpdatingDataSource {
     }
 }
 
-/// Defines an object that inserts, deleletes and reloads cells and sections in a collection view
-/// See extension for `UICollectionView`
+/// Defines an object that inserts, deleletes and reloads cells and sections in a table view.
+/// These methods allow a data source to make specific updates the table view based on changes
+/// in the backing store.  See extension below of `UITableView` which provides an implementation.
 protocol SelfUpdatingDataSourceDelegate: class {
     func dataSource(_ dataSource: SelfUpdatingDataSource, didUpdateItemsFromOldValue oldValue: NSOrderedSet, toNewValue newValue: NSOrderedSet, section: Int)
     func dataSource(_ dataSource: SelfUpdatingDataSource, reloadSections sections: [Int])
@@ -45,64 +48,9 @@ extension SelfUpdatingDataSourceDelegate {
     }
 }
 
-extension UICollectionView: SelfUpdatingDataSourceDelegate {
-    
-    func dataSource(_ dataSource: SelfUpdatingDataSource, redecorateItemsIn section: Int) {
-        for indexPath in indexPathsForVisibleItems.filter({ $0.section == section }) {
-            if let cell = cellForItem(at: indexPath) {
-                dataSource.decorate(cell: cell, at: indexPath)
-            }
-        }
-    }
-    
-    func dataSource(_ dataSource: SelfUpdatingDataSource, reloadSections sections: [Int], animated: Bool) {
-        let updates = {
-            self.reloadSections(IndexSet(sections))
-        }
-        if animated {
-            performBatchUpdates(updates, completion: nil)
-        } else {
-            UIView.animate(withDuration: 0.0) {
-                self.performBatchUpdates(updates, completion: nil)
-            }
-        }
-    }
-    
-    func dataSource(_ dataSource: SelfUpdatingDataSource, didUpdateItemsFromOldValue oldValue: NSOrderedSet, toNewValue newValue: NSOrderedSet, section: Int) {
-        
-        let insertedIndexPaths = newValue.indexPathsForInsertedItems(from: oldValue, section: section)
-        let deletedIndexPaths = newValue.indexPathsForDeletedItems(from: oldValue, section: section)
-        guard !insertedIndexPaths.isEmpty || !deletedIndexPaths.isEmpty else {
-            return
-        }
-        
-        performBatchUpdates(
-            {
-                if !insertedIndexPaths.isEmpty {
-                    self.insertItems(at: insertedIndexPaths)
-                }
-                if !deletedIndexPaths.isEmpty {
-                    self.deleteItems(at: deletedIndexPaths)
-                }
-        },
-            completion: nil
-        )
-    }
-    
-    func dataSourceReloadAll(_ dataSource: SelfUpdatingDataSource, animated: Bool) {
-        if !animated {
-            reloadData()
-        } else {
-            performBatchUpdates(
-                {
-                    self.reloadData()
-            },
-                completion: nil
-            )
-        }
-    }
-}
-
+/// By conforming to this protocol, a table view can be set as the `delegate` property
+/// on any `SelfUpdatingDataSource`, thereby allowing the data source to hace direct
+/// accesss to the table view abstracted behind this protocol.
 extension UITableView: SelfUpdatingDataSourceDelegate {
     
     func dataSource(_ dataSource: SelfUpdatingDataSource, redecorateItemsIn section: Int) {
