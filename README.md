@@ -5,7 +5,7 @@ Requires [Cocoapods](https://cocoapods.org).  Setup at command line:
 ```
 $ pod install
 ```
-Then open .xcwordspace file in Xcode.
+Then open *.xcworkspace* file in Xcode.
 
 ## [SDWebImage](https://github.com/rs/SDWebImage)
 Third-party library used to load and cache images.
