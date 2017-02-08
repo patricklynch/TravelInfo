@@ -102,7 +102,11 @@ class TravelOptionsDataSource: NSObject, UITableViewDataSource, SelfUpdatingData
     
     var sortOption: SortOptions? = .departure {
         didSet {
-            updateFilteredItems()
+            items = NSOrderedSet(array: [])
+            
+            DispatchQueue.main.asyncAfter(delay: 0.25) {
+                self.updateFilteredItems()
+            }
         }
     }
 }

@@ -109,10 +109,10 @@ class TravelModesViewController: UIViewController, UICollectionViewDelegateFlowL
             } else if indexPath.item > currentIndexPath.item {
                 direction = .left
             } else {
-                direction = .none
+                direction = .up
             }
         } else {
-            direction = .none
+            direction = .up
         }
         
         let viewController: TravelOptionsViewController

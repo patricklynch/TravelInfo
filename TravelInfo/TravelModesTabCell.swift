@@ -53,7 +53,17 @@ class TravelModesTabCell: UICollectionViewCell {
             targetHeight = 0.0
         }
         
-        selectionViewHeight.constant = targetHeight
-        selectionView.layoutIfNeeded()
+        UIView.animate(
+            withDuration: 0.75,
+            delay: isSelected ? 0.35 : 0.0,
+            usingSpringWithDamping: 0.5,
+            initialSpringVelocity: 0.5,
+            options: [],
+            animations: {
+                self.selectionViewHeight.constant = targetHeight
+                self.layoutIfNeeded()
+            },
+            completion: nil
+        )
     }
 }

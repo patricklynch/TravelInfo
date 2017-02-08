@@ -9,14 +9,14 @@
 import UIKit
 
 enum AnimationDirection: CGFloat {
-    case left = -1.0, right = 1.0, none = 0.0
+    case left, right, up
 }
 
 class TravelOptionsViewController: UIViewController, UITableViewDelegate, Sortable {
     
     private var dataSource: TravelOptionsDataSource!
     
-    var direction: AnimationDirection = .none
+    var direction: AnimationDirection = .up
     
     static func create(with travelMode: TravelMode) -> TravelOptionsViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -50,11 +50,17 @@ class TravelOptionsViewController: UIViewController, UITableViewDelegate, Sortab
             self.view.alpha = 1.0
         }
         
-        guard direction != .none else {
-            return
+        let transform: CGAffineTransform
+        switch direction {
+        case .up:
+            transform = CGAffineTransform(translationX: 0.0, y: 100.0)
+        case .left:
+            transform = CGAffineTransform(translationX: 100.0, y: 0.0)
+        case .right:
+            transform = CGAffineTransform(translationX: -100.0, y: 0.0)
         }
         
-        view.transform = CGAffineTransform(translationX: direction.rawValue * 100.0, y: 0.0)
+        view.transform = transform
         UIView.animate(
             withDuration: 0.5,
             delay: 0.0,
